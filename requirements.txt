@@ -1,2 +1,2 @@
 pandocfilters
-pypandoc
+pypandoc>=1.4
