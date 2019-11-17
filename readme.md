@@ -1,8 +1,8 @@
 # Commentary
 
-Commentary is a command line document conversion tool that preserves native-style comment formatting between Markdown and MS Word.
+Commentary is a command line document conversion tool that preserves native-style comment formatting between Markdown and MS Word. It uses Pandoc to convert between file types and RegEx to translate comments. 
 
-Create fully marked-up docx files in Markdown without having to touch Word.
+The goal of this project is to create a docx editing and annotation workflow that exists entirely within Markdown.
 
 ## Requirements
 
@@ -46,3 +46,4 @@ optional arguments:
                         md conversion. default is to use markdown-style
                         comments
 ```
+
