@@ -116,7 +116,7 @@ def word2markdownComments(input, input_format, preserve_metadata):
         with open(input, 'r') as file:
             rawmd = file.read()
     else:
-        rawmd = pypandoc.convert(input, 'markdown', format='docx', extra_args=['--wrap=none','--track-changes=all'])
+        rawmd = pypandoc.convert_file(input, 'markdown', format='docx', extra_args=['--wrap=none','--track-changes=all'])
 
     if preserve_metadata: # add additional capture groups for metadata preservation
         sub = re.sub(r'\[(.+)\]\{\.comment-start id="([0-9])*" author="(.+?)" date="([0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}\:[0-9]{2}\:[0-9]{2}Z)"}(.*?)(\\\[|\[)(\\\]|\]){.comment-end id="\2"}',
