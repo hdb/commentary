@@ -2,14 +2,13 @@
 
 Commentary is a command line document conversion tool that preserves native-style comments and tracked-changes between Markdown and MS Word. It uses Pandoc to convert between file types, Git to track document changes, and RegEx to translate comments, insertions and deletions to appropriate style.
 
-The goal of this project is to create a docx editing and annotation workflow that exists entirely within Markdown.
+The goal of this project is to facilitate an entirely Markdown workflow with docx editing, annotation and collaboration capabilities comparable to Word.
 
 ## Requirements
 
-- Python 3
-- Git (optional; required for track changes)
+- [Python 3](https://www.python.org/downloads/)
+- [Git](https://git-scm.com/) (optional; required for track changes)
 - [Pandoc](https://pandoc.org/)
-- [Pypandoc](https://github.com/bebraw/pypandoc)
 
 ## Installation
 
