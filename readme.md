@@ -13,7 +13,7 @@ The goal of this project is to facilitate an entirely Markdown workflow with doc
 ## Installation
 
 ```
-git clone git@github.com:hdbhdb/commentary.git
+git clone git@github.com:hdb/commentary.git
 cd commentary
 pip install -r requirements.txt
 ```
