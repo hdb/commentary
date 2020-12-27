@@ -162,7 +162,7 @@ def main():
     markdown_files = ['txt', 'md', 'markdown', 'mdown', 'mkdn', 'mkd', 'mdwn', 'mkdown']
 
     global config_file
-    config_file = str(Path.home())+"/.commentary-conf.yaml"
+    config_file = str(Path.home())+"/.config/commentary.yaml"
 
     if args.default_author is not None:
         configureAuthor(args.default_author)

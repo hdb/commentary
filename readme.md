@@ -54,7 +54,7 @@ optional arguments:
 
 ## Configuration
 
-Use `-A 'AUTHOR NAME'` to save the default comment author name to `~/.commentary-conf.yaml`.
+Use `-A 'AUTHOR NAME'` to save the default comment author name to `~/.config/commentary.yaml`.
 
 ## Converting Comments
 
