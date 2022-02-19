@@ -5,7 +5,6 @@ Commentary is a command line document conversion tool that preserves native-styl
 ## Requirements
 
 - [Python 3](https://www.python.org/downloads/)
-- [Git](https://git-scm.com/) (optional; required for track changes)
 - [Pandoc](https://pandoc.org/)
 
 ## Installation
