@@ -10,5 +10,5 @@ Commentary is a command line document conversion tool that preserves native-styl
 .. toctree::
    :maxdepth: 4
 
-   commentary
    usage
+   commentary
