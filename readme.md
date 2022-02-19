@@ -11,12 +11,8 @@ Commentary is a command line document conversion tool that preserves native-styl
 ## Installation
 
 ```
-git clone git@github.com:hdb/commentary.git
-cd commentary
-pip install -r requirements.txt
+pip install commentary
 ```
-
-PyPI package is forthcoming.
 
 ## Usage
 
