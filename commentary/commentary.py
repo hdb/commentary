@@ -11,6 +11,7 @@ from pathlib import Path
 import yaml
 
 def parse():
+    """Parse command-line arguments."""
 
     parser = argparse.ArgumentParser(
         prog='commentary',
@@ -33,6 +34,7 @@ def parse():
     return args
 
 def markdown2wordComments(text, author):
+    """Convert markdown-style comments to docx-style comments."""
 
     #with open(input, 'r') as file: # may need to change back if altering sequence of comment/track changes processing
     #    text = file.read()
@@ -62,6 +64,7 @@ def markdown2wordComments(text, author):
     return sub2
 
 def word2markdownComments(input, input_format, preserve_metadata):
+    """Convert docx-style comments to markdown-style comments."""
 
     if input_format in markdown_files:
         with open(input, 'r') as file:
@@ -82,6 +85,7 @@ def word2markdownComments(input, input_format, preserve_metadata):
     return sub
 
 def writemd(text, output):
+    """Write markdown text to file."""
 
     with open(output, "w") as text_file:
         text_file.write(text)
@@ -89,10 +93,12 @@ def writemd(text, output):
     return text
 
 def writedocx(text, output):
+    """Convert markdown text to docx using Pandoc."""
 
     return pypandoc.convert_text(text, 'docx', format='md', outputfile=output)  # TODO: add support for extra_args?
 
 def configureAuthor(author):
+    """Configure default comments author in ~/.config/commentary.yaml."""
 
     data = {
         'author': author
@@ -106,6 +112,7 @@ def configureAuthor(author):
     return author
 
 def main():
+    """Main method."""
 
     args = parse()
 
