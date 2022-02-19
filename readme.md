@@ -1,8 +1,6 @@
 # Commentary
 
-Commentary is a command line document conversion tool that preserves native-style comments and tracked-changes between Markdown and MS Word. It uses Pandoc to convert between file types, Git to track document changes, and RegEx to translate comments, insertions and deletions to appropriate style.
-
-The goal of this project is to facilitate an entirely Markdown workflow with docx editing, annotation and collaboration capabilities comparable to Word.
+Commentary is a command line document conversion tool that preserves native-style comments between Markdown and MS Word.
 
 ## Requirements
 
@@ -39,9 +37,6 @@ optional arguments:
   -a [AUTHOR], --author [AUTHOR]
                         name to appear in docx comments
   -m, --metadata        preserve comment metadata in docx to md conversions
-  -t, --track-changes   include tracked changes in addition to comments. file
-                        must be tracked by git repo for this option to work.
-                        [experimental]
   -p, --print           print results to terminal
   -D, --force-docx-comments
                         force conversion to docx-style comments during md -->
@@ -61,7 +56,3 @@ Use `-A 'AUTHOR NAME'` to save the default comment author name to `~/.config/com
 Commentary handles comments well in most cases. Docx comments which highlight areas spanning multiple paragraphs may fail, however.
 
 Using the `-m` flag, Commentary will save docx comment metadata within markdown html comment tags. For markdown-to-docx conversions, Commentary will re-convert these comments to docx with their original author and time-stamp metadata.
-
-## Tracking Changes
-
-With the `-t` flag, Commentary can turn git diffs into docx-formatted tracked-changes, though this feature is still experimental and fails in some complex use cases. In order to use this feature, the input file must be tracked by `git`. If the input file has any uncommitted changes, Commentary will diff the current file against the last commit. If there are no uncommitted changes, Commentary will diff between the last two commits.
