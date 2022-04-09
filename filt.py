@@ -5,18 +5,24 @@ import re
 import json
 from datetime import datetime
 
-n = -1
 
-AUTHOR='Anonymous'
-INCL_META=True
+comment_id_counter = -1
+
+AUTHOR='Anonymous' #    name of author to use for newly added comments
+
+INCL_META=True #        append metadata to markdown inline html data
+
+#                       example:
+#                       <!-- a:Author Name|d:2022-04-09T20:34:18Z|Here is the comment -->
 
 
-def comment(k, v, fmt, meta):
+def filter_handler(k, v, fmt, meta):
+    """Direct conversion function based on document and element type"""
 
-    if fmt in ['docx', 'json'] and k.startswith('Raw'):
+    if fmt in ['docx'] and k.startswith('Raw'):
         return md_to_docx(text=v[1], inline=k=='RawInline')
 
-    if fmt in ['markdown', 'json'] and k == 'Span':
+    if fmt in ['markdown'] and k == 'Span':
         return docx_to_md(text=v)
 
     if fmt in ['markdown'] and k.startswith('Raw'):
@@ -30,10 +36,12 @@ def comment(k, v, fmt, meta):
 
 
 def md_to_docx(text, inline=False):
+    """Convert markdown inline HTML comments to docx comments"""
+
     date_str = datetime.utcnow().isoformat()[:-7] + 'Z'
-    match = re.match(r'<!-- a\:(.+?)\|d\:(.+?)\|(.+(|(?:\n.+)+)) -->', text)
+    match = re.match(r'<!-- a\:(.+?)\|d\:(.+?)\|(.+(|(?:\n.+)+)) -->', text) # match for metadata comments
     if match is None:
-        match = re.match(r'<!-- (.+(|(?:\n.+)+)) -->', text)
+        match = re.match(r'<!-- (.+(|(?:\n.+)+)) -->', text) # general commment match
         if match is None: return None
         author = AUTHOR
         comment = match.group(1)
@@ -81,15 +89,18 @@ def md_to_docx(text, inline=False):
     return out if not inline else out['c']
 
 def docx_to_md(text):
+    """Convert docx comments to markdown inline HTML comments"""
+
     if text[0][1][0] == 'comment-start':
         author = text[0][2][1][1]
         date_str = text[0][2][2][1]
         if INCL_META:
-            comment = f'<!-- a:{author}|d:{date_str}|{stringify(text[1])} -->'
+            comment = f'<!-- a:{author}|d:{date_str}|{stringify(text[1])} -->' # include metadata
         else:
             comment = f'<!-- {stringify(text[1])} -->'
         return RawInline('html', comment)
 
+    # ignore all other span elements
     # elif text[0][1][0] != 'comment-end':
     #     return Span(*text)
 
@@ -97,6 +108,8 @@ def docx_to_md(text):
         return []
 
 def md_to_md(text):
+    """Add author and timestamp metadata to markdown comments"""
+
     date_str = datetime.utcnow().isoformat()[:-7] + 'Z'
     match = re.match(r'<!-- a\:(.+?)\|d\:(.+?)\|(.+(|(?:\n.+)+)) -->', text)
     if match is None:
@@ -106,10 +119,12 @@ def md_to_md(text):
     return None
 
 def comment_id(inc=False, dec=False):
-    global n
-    if inc: n+=1
-    if dec: n-=1
-    return str(n)
+    """Increment or decrement comment id counter"""
+
+    global comment_id_counter
+    if inc: comment_id_counter+=1
+    if dec: comment_id_counter-=1
+    return str(comment_id_counter)
 
 if __name__ == "__main__":
-    toJSONFilter(comment)
+    toJSONFilter(filter_handler)
