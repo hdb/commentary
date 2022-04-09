@@ -27,5 +27,8 @@ setup(
         'pypandoc>=1.4',
         'pyyaml>=5.2',
     ],
-    scripts=['bin/commentary']
+    scripts=[
+        'bin/commentary',
+        'filter/commentary-filter'
+    ]
 )

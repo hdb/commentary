@@ -136,5 +136,8 @@ def comment_id(inc=False, dec=False):
     if dec: comment_id_counter-=1
     return str(comment_id_counter)
 
-if __name__ == "__main__":
+def main():
     toJSONFilter(filter_handler)
+
+if __name__ == "__main__":
+    main()
