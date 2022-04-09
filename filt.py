@@ -1,15 +1,14 @@
 #!/usr/bin/env python
 from pandocfilters import toJSONFilter, stringify, RawInline, Span
+import pypandoc
 import re
 import json
 from datetime import datetime
 
-
-import pypandoc
-
 n = -1
 
 AUTHOR='Anonymous'
+INCL_META=True
 
 
 def comment(k, v, fmt, meta):
@@ -23,9 +22,16 @@ def comment(k, v, fmt, meta):
 
 
 def md_to_docx(text, date_str, inline=False):
-    match = re.match(r'<!-- (.+(|(?:\n.+)+)) -->', text)
-    if match is None: return None
-    comment = match.group(1)
+    match = re.match(r'<!-- a\:(.+?)\|d\:(.+?)\|(.+(|(?:\n.+)+)) -->', text)
+    if match is None:
+        match = re.match(r'<!-- (.+(|(?:\n.+)+)) -->', text)
+        if match is None: return None
+        author = AUTHOR
+        comment = match.group(1)
+    else:
+        author = match.group(1)
+        date_str = match.group(2)
+        comment = match.group(3)
     comment_blocks = json.loads(pypandoc.convert_text(comment,to='json',format='markdown'))['blocks'][0]['c']
     out = {
         "t": "Para",
@@ -37,7 +43,7 @@ def md_to_docx(text, date_str, inline=False):
                         comment_id(inc=True),
                         ["comment-start"],
                         [
-                            ["author", AUTHOR],
+                            ["author", author],
                             ["date",date_str]
                         ]
                     ],
@@ -69,7 +75,10 @@ def docx_to_md(text):
     if text[0][1][0] == 'comment-start':
         author = text[0][2][1][1]
         date_str = text[0][2][2][1]
-        comment = f'<!-- {stringify(text[1])} -->'
+        if INCL_META:
+            comment = f'<!-- a:{author}|d:{date_str}|{stringify(text[1])} -->'
+        else:
+            comment = f'<!-- {stringify(text[1])} -->'
         return RawInline('html', comment)
     
     # elif text[0][1][0] != 'comment-end':
