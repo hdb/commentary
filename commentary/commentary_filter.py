@@ -4,16 +4,25 @@ import pypandoc
 import re
 import json
 from datetime import datetime
+import os
 
 
 comment_id_counter = -1
 
-AUTHOR='Anonymous' #    name of author to use for newly added comments
+try:
+    with open(os.path.join(os.path.dirname(__file__), 'data/commentary_conf.json'), 'r') as p:
+        CONFIG = json.load(p)
 
-INCL_META=True #        append metadata to markdown inline html data
+    AUTHOR = CONFIG['author'] #                 name of author to use for newly added comments
 
-#                       example:
-#                       <!-- a:Author Name|d:2022-04-09T20:34:18Z|Here is the comment -->
+    INCL_META = CONFIG['include_metadata'] #        append metadata to markdown inline html data
+
+    #                                           example:
+    #                                           <!-- a:Author Name|d:2022-04-09T20:34:18Z|Here is the comment -->
+
+except:
+    AUTHOR, INCL_META ='Anonymous', True
+
 
 
 def filter_handler(k, v, fmt, meta):

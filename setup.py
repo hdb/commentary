@@ -16,6 +16,9 @@ setup(
     author_email='hudsondiggsbailey@gmail.com',
     license='MIT',
     packages=['commentary'],
+    package_data = {
+        'commentary': ['data/*.json']
+    },
     classifiers=(
         "Programming Language :: Python :: 3",
         "Operating System :: OS Independent",
