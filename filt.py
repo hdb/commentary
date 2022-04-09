@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from pandocfilters import toJSONFilter, stringify, RawInline, Span
+from pandocfilters import toJSONFilter, stringify, RawInline, RawBlock, Span
 import pypandoc
 import re
 import json
@@ -14,14 +14,23 @@ INCL_META=True
 def comment(k, v, fmt, meta):
 
     if fmt in ['docx', 'json'] and k.startswith('Raw'):
-        date_str = datetime.utcnow().isoformat()[:-7] + 'Z'
-        return md_to_docx(v[1], date_str, inline=k=='RawInline')
+        return md_to_docx(text=v[1], inline=k=='RawInline')
 
     if fmt in ['markdown', 'json'] and k == 'Span':
-        return docx_to_md(v)
+        return docx_to_md(text=v)
+
+    if fmt in ['markdown'] and k.startswith('Raw'):
+        meta_comment = md_to_md(v[1])
+        if meta_comment is None:
+            return None
+        elif k == 'RawInline':
+            return RawInline('html', meta_comment)
+        elif k == 'RawBlock':
+            return RawBlock('html', meta_comment)
 
 
-def md_to_docx(text, date_str, inline=False):
+def md_to_docx(text, inline=False):
+    date_str = datetime.utcnow().isoformat()[:-7] + 'Z'
     match = re.match(r'<!-- a\:(.+?)\|d\:(.+?)\|(.+(|(?:\n.+)+)) -->', text)
     if match is None:
         match = re.match(r'<!-- (.+(|(?:\n.+)+)) -->', text)
@@ -80,13 +89,21 @@ def docx_to_md(text):
         else:
             comment = f'<!-- {stringify(text[1])} -->'
         return RawInline('html', comment)
-    
+
     # elif text[0][1][0] != 'comment-end':
     #     return Span(*text)
 
     else:
         return []
 
+def md_to_md(text):
+    date_str = datetime.utcnow().isoformat()[:-7] + 'Z'
+    match = re.match(r'<!-- a\:(.+?)\|d\:(.+?)\|(.+(|(?:\n.+)+)) -->', text)
+    if match is None:
+        match = re.match(r'<!-- (.+(|(?:\n.+)+)) -->', text)
+        if match is not None:
+            return f'{text[:5]}a:{AUTHOR}|d:{date_str}|{text[5:]}'
+    return None
 
 def comment_id(inc=False, dec=False):
     global n
