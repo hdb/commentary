@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-from pandocfilters import toJSONFilter
+from pandocfilters import toJSONFilter, stringify, RawInline, Span
 import re
 import json
 from datetime import datetime
@@ -14,11 +14,12 @@ AUTHOR='Anonymous'
 
 def comment(k, v, fmt, meta):
 
-    if fmt == 'docx' and k.startswith('Raw'):
+    if fmt in ['docx', 'json'] and k.startswith('Raw'):
         date_str = datetime.utcnow().isoformat()[:-7] + 'Z'
         return md_to_docx(v[1], date_str, inline=k=='RawInline')
 
-    # if fmt == 'markdown' and k == 'Span':
+    if fmt in ['markdown', 'json'] and k == 'Span':
+        return docx_to_md(v)
 
 
 def md_to_docx(text, date_str, inline=False):
@@ -63,6 +64,19 @@ def md_to_docx(text, date_str, inline=False):
     }
 
     return out if not inline else out['c']
+
+def docx_to_md(text):
+    if text[0][1][0] == 'comment-start':
+        author = text[0][2][1][1]
+        date_str = text[0][2][2][1]
+        comment = f'<!-- {stringify(text[1])} -->'
+        return RawInline('html', comment)
+    
+    # elif text[0][1][0] != 'comment-end':
+    #     return Span(*text)
+
+    else:
+        return []
 
 
 def comment_id(inc=False, dec=False):
