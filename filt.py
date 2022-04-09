@@ -57,11 +57,12 @@ def md_to_docx(text, inline=False):
                 "t": "Span",
                 "c": [
                     [
-                        comment_id(inc=True),
+                        "",
                         ["comment-start"],
                         [
+                            ["id", comment_id(inc=True)],
                             ["author", author],
-                            ["date",date_str]
+                            ["date",date_str],
                         ]
                     ],
                    comment_blocks
@@ -74,11 +75,11 @@ def md_to_docx(text, inline=False):
                 "t": "Span",
                 "c": [
                     [
-                        comment_id(),
+                        "",
+                        ["comment-end"],
                         [
-                            "comment-end"
-                        ],
-                        []
+                            ["id", comment_id()]
+                        ]
                     ],
                     []
                 ]
