@@ -1,7 +1,7 @@
-Commentary Module
+Pandoc Filter
 ==================
 
-.. automodule:: commentary.commentary
+.. automodule:: commentary.commentary_filter
    :members:
    :undoc-members:
    :show-inheritance:

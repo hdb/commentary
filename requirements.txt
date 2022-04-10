@@ -1,2 +1,2 @@
+pandocfilters
 pypandoc>=1.4
-pyyaml>=5.2
