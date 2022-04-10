@@ -25,7 +25,7 @@ setup(
     ),
     install_requires=[
         'pypandoc>=1.4',
-        'pyyaml>=5.2',
+        'pandocfilters==1.5.0'
     ],
     scripts=[
         'bin/commentary',
